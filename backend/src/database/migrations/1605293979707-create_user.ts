@@ -19,12 +19,16 @@ export class createUser1605293979707 implements MigrationInterface {
                 type: "varchar"
               },
               {
+                name:"nickname",
+                type: "varchar"
+              },
+              {
                 name:"email",
                 type: "varchar"
               },
               {
                 name:"whastsapp",
-                type: "decimal"
+                type: "integer"
               },
               {
                 name:"password",
@@ -48,15 +52,15 @@ export class createUser1605293979707 implements MigrationInterface {
                 isNullable:true
               },
               {
-                name:"invertor_profile_id",
-                type: "number",
+                name:"profile_id",
+                type: "integer",
               },
 
             ],
             foreignKeys:[
                 {
                     name:"investorType",
-                    columnNames: [ "invertor_profile_id"],
+                    columnNames: [ "profile_id"],
                     referencedTableName:"investor_profile",
                     referencedColumnNames: ["id"],
                     onUpdate: "CASCADE",

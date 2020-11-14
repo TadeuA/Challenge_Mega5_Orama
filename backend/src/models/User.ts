@@ -1,6 +1,9 @@
-import {Entity, Column, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate}from 'typeorm';
+import {Entity, Column, PrimaryGeneratedColumn, BeforeInsert, BeforeUpdate,  ManyToOne, JoinColumn, OneToMany, JoinColumn}from 'typeorm';
 import bcrypt from "bcryptjs";
-
+import InvestorProfile from "./InvestorProfile"
+import UserInvestment from './UserInvestment';
+import UserTask from './UserTask'
+import UserTrail from './UserTrail'
 
 @Entity('user')
 export default class User{
@@ -9,6 +12,9 @@ export default class User{
 
     @Column()
     name: string;
+
+    @Column()
+    nickname: string;
     
     @Column()
     email: string;
@@ -33,4 +39,26 @@ export default class User{
     hashPassword() {
         this.password = bcrypt.hashSync(this.password, 8);
     }
+
+    @ManyToOne(() => InvestorProfile, investorProfile => investorProfile.users)
+    @JoinColumn({ name: 'profile_id'})
+    profile: InvestorProfile;
+
+    @OneToMany(() => UserInvestment, userInvestment => userInvestment.user,{
+        cascade:['insert', 'update']
+    })
+    @JoinColumn({ name:"user_id"})
+    investments: UserInvestment[];
+
+    @OneToMany(() => UserTrail, userTrail => userTrail.user,{
+        cascade:['insert', 'update']
+    })
+    @JoinColumn({ name:"user_id"})
+    trails: UserTrail[];
+
+    @OneToMany(() => UserTask, userTask => userTask.user,{
+        cascade:['insert', 'update']
+    })
+    @JoinColumn({ name:"user_id"})
+    tasks: UserTask[];
 }

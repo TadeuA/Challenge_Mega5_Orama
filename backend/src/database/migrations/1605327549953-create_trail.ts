@@ -1,10 +1,10 @@
 import {MigrationInterface, QueryRunner, Table} from "typeorm";
 
-export class createInvestment1605294984517 implements MigrationInterface {
+export class createTrail1605327549953 implements MigrationInterface {
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.createTable(new Table({
-            name:"investment",
+            name:"trail",
             columns:[
               {
                 name: "id",
@@ -22,24 +22,28 @@ export class createInvestment1605294984517 implements MigrationInterface {
                 name: "description",
                 type:"varchar",
               },
-              
               {
-                name: "earnings_forecast",
-                type:"decimal",
-                precision:2
+                name: "profile_id",
+                type:"integer",
               },
-              
-              {
-                name: "how_long",
-                type:"varchar",
-              },
+             
             ],
+            foreignKeys:[
+                {
+                    name:"investorType",
+                    columnNames: [ "profile_id"],
+                    referencedTableName:"investor_profile",
+                    referencedColumnNames: ["id"],
+                    onUpdate: "CASCADE",
+                }
+              
+            ]
             
         }))
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable("investment")
+        await queryRunner.dropTable("trail")
 
     }
 
